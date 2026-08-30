@@ -9,6 +9,7 @@ export * from "./documents";
 export * from "./employees";
 export * from "./goals";
 export * from "./leave";
+export * from "./onboarding";
 export * from "./org";
 export * from "./performance";
 export * from "./positions";

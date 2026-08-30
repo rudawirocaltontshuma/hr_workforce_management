@@ -1,5 +1,6 @@
 import { SEED } from "./constants";
-import { activeEmployees } from "./employees";
+import { departmentById } from "./departments";
+import { activeEmployees, employeeById } from "./employees";
 import { leaveRequests } from "./leave";
 import { addDays, isWeekend, NOW, Rng, toISODate } from "./rng";
 import type { AttendanceRecord, AttendanceStatus } from "./types";
@@ -99,4 +100,57 @@ export function attendanceTrend() {
         rate: Math.round((present / records.length) * 1000) / 10,
       };
     });
+}
+
+export function attendanceKpis() {
+  const totals: Record<AttendanceStatus, number> = { Present: 0, Absent: 0, Late: 0, Remote: 0, "On Leave": 0 };
+  for (const record of attendanceRecords) totals[record.status]++;
+  const rate =
+    attendanceRecords.length > 0
+      ? Math.round(((totals.Present + totals.Remote) / attendanceRecords.length) * 1000) / 10
+      : 0;
+  return { ...totals, attendanceRate: rate };
+}
+
+export function departmentAttendanceRates() {
+  const byDepartment = new Map<string, { present: number; total: number }>();
+
+  for (const record of attendanceRecords) {
+    const employee = employeeById.get(record.employeeId);
+    if (!employee) continue;
+    const entry = byDepartment.get(employee.departmentId) ?? { present: 0, total: 0 };
+    entry.total++;
+    if (record.status === "Present" || record.status === "Remote") entry.present++;
+    byDepartment.set(employee.departmentId, entry);
+  }
+
+  return [...byDepartment.entries()]
+    .map(([departmentId, { present, total }]) => ({
+      department: departmentById.get(departmentId)?.name ?? departmentId,
+      rate: total > 0 ? Math.round((present / total) * 1000) / 10 : 0,
+    }))
+    .sort((a, b) => b.rate - a.rate);
+}
+
+export function lateArrivalsTrend() {
+  const byDate = new Map<string, number>();
+  for (const record of attendanceRecords) {
+    if (record.status !== "Late") continue;
+    byDate.set(record.date, (byDate.get(record.date) ?? 0) + 1);
+  }
+  return [...byDate.entries()].sort(([a], [b]) => (a < b ? -1 : 1)).map(([date, count]) => ({ date, count }));
+}
+
+export function absenceDistribution() {
+  const byDepartment = new Map<string, number>();
+  for (const record of attendanceRecords) {
+    if (record.status !== "Absent") continue;
+    const employee = employeeById.get(record.employeeId);
+    if (!employee) continue;
+    const name = departmentById.get(employee.departmentId)?.name ?? employee.departmentId;
+    byDepartment.set(name, (byDepartment.get(name) ?? 0) + 1);
+  }
+  return [...byDepartment.entries()]
+    .map(([department, count]) => ({ department, count }))
+    .sort((a, b) => b.count - a.count);
 }
