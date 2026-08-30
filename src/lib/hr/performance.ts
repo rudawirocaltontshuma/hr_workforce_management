@@ -109,3 +109,37 @@ export function latestReviewForEmployee(employeeId: string) {
   const reviews = reviewsForEmployee(employeeId).filter((r) => r.status === "Completed");
   return reviews.sort((a, b) => (a.reviewDate < b.reviewDate ? 1 : -1))[0];
 }
+
+export const CURRENT_REVIEW_PERIOD = "2026 H1";
+
+export function performanceKpis() {
+  const current = performanceReviews.filter((review) => review.period === CURRENT_REVIEW_PERIOD);
+  const completed = current.filter((review) => review.status === "Completed");
+  const reviewCompletion = current.length > 0 ? Math.round((completed.length / current.length) * 100) : 0;
+  const averagePerformance =
+    completed.length > 0 ? Math.round(completed.reduce((sum, r) => sum + r.score, 0) / completed.length) : 0;
+  const goalsCompleted = completed.reduce((sum, r) => sum + r.goalsCompleted, 0);
+  const employeesReviewed = completed.length;
+
+  return { reviewCompletion, averagePerformance, goalsCompleted, employeesReviewed, totalCycle: current.length };
+}
+
+export function reviewCompletionTrend() {
+  return ["2025 H2", "2026 H1"].map((period) => {
+    const reviews = performanceReviews.filter((r) => r.period === period);
+    const completed = reviews.filter((r) => r.status === "Completed").length;
+    return { period, completionRate: reviews.length > 0 ? Math.round((completed / reviews.length) * 100) : 0 };
+  });
+}
+
+export function departmentPerformanceScores() {
+  const departmentIds = [...new Set(performanceReviews.map((review) => review.departmentId))];
+  return departmentIds.map((departmentId) => {
+    const completed = performanceReviews.filter(
+      (r) => r.departmentId === departmentId && r.status === "Completed" && r.period === CURRENT_REVIEW_PERIOD,
+    );
+    const avg =
+      completed.length > 0 ? Math.round(completed.reduce((sum, r) => sum + r.score, 0) / completed.length) : 0;
+    return { departmentId, score: avg };
+  });
+}

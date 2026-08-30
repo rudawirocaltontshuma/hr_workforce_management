@@ -70,3 +70,19 @@ export function courseStats(courseId: string) {
     certificates: records.filter((record) => record.certificateIssued).length,
   };
 }
+
+export function trainingKpis() {
+  const enrolledEmployeeIds = new Set(trainingRecords.map((record) => record.employeeId));
+  const completed = trainingRecords.filter((record) => record.status === "Completed").length;
+  const completionRate = trainingRecords.length > 0 ? Math.round((completed / trainingRecords.length) * 100) : 0;
+  const totalHours = Math.round(trainingRecords.reduce((sum, record) => sum + record.hoursLogged, 0));
+  const certificates = trainingRecords.filter((record) => record.certificateIssued).length;
+
+  return {
+    courseCount: courses.length,
+    employeesEnrolled: enrolledEmployeeIds.size,
+    completionRate,
+    totalHours,
+    certificates,
+  };
+}
