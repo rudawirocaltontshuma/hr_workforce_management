@@ -51,6 +51,17 @@ export function hiringForecastByQuarter() {
   return quarters;
 }
 
+export function headcountForecastSeries() {
+  const quarters = hiringForecastByQuarter();
+  const points: { label: string; headcount: number }[] = [{ label: "Current", headcount: currentHeadcount }];
+  let running = currentHeadcount;
+  for (const quarter of quarters) {
+    running += quarter.hires;
+    points.push({ label: quarter.quarter, headcount: running });
+  }
+  return points;
+}
+
 export function workforceCostForecast() {
   const currentCost = totalPayroll();
   const points: { label: string; cost: number }[] = [{ label: "Current", cost: currentCost }];

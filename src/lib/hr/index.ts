@@ -1,3 +1,4 @@
+export * from "./analytics";
 export * from "./attendance";
 export * from "./benefits";
 export * from "./candidates";
