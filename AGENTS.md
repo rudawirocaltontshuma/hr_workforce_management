@@ -2,7 +2,7 @@
 
 ## Project overview
 
-Studio Admin is a responsive admin dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, and shadcn/ui.
+Dimension People is a front-end demo of an enterprise HR & workforce management platform, built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, and shadcn/ui. It has no backend, database, or authentication — all data lives in `src/lib/hr/` as a seeded, deterministic mock dataset. The project's UI shell and component conventions originate from the open-source Studio Admin template (see `README.md` acknowledgements).
 
 This repository uses the shadcn `radix-nova` style. The shadcn CLI reports `base: "radix"`, which refers to Radix UI. Always inspect the local components in `src/components/ui/` because individual wrappers may use different primitives.
 

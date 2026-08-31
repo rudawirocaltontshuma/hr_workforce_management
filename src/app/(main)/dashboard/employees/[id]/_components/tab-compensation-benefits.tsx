@@ -39,7 +39,7 @@ export function TabCompensationBenefits({ employee }: { employee: Employee }) {
             </div>
           </div>
           <p className="text-muted-foreground text-xs leading-relaxed">
-            Figures are illustrative demo data only. Nexora People does not process real payroll.
+            Figures are illustrative demo data only. Dimension People does not process real payroll.
           </p>
         </CardContent>
       </Card>

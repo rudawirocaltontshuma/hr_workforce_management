@@ -1,124 +1,56 @@
-# Next.js Admin Template with TypeScript & Shadcn UI
+# Dimension People
 
-**Studio Admin** - Includes multiple dashboards, authentication layouts, customizable theme presets, and more.
+**Dimension People** is a front-end demonstration of an enterprise HR & workforce management platform, built with Next.js, TypeScript, Tailwind CSS, and shadcn/ui.
 
-<img src="https://github.com/arhamkhnz/next-shadcn-admin-dashboard/blob/main/media/dashboard.png?version=5" alt="Dashboard Screenshot">
+It covers the full breadth of a modern people-operations product: an executive dashboard, employee directory and 360 profiles, department and org-chart views, recruitment and candidate pipelines, onboarding, attendance, leave management, performance reviews, goals, training, a document center, compensation, benefits, workforce planning, a report center, deep analytics, and settings.
 
-Most admin templates I found, free or paid, felt cluttered, outdated, or too rigid. I built this as a cleaner alternative with features often missing in others, such as theme toggling and layout controls, while keeping the design modern, minimal, and flexible.
-
-> **View demo:** [studio admin](https://next-shadcn-admin-dashboard.vercel.app)
-
-> [!NOTE]
-> Looking for the Base UI version? Check out [next-shadcn-admin-dashboard-baseui](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-baseui).
->
-> Looking for the React Aria version? Check out [arhamkhnz/next-shadcn-admin-dashboard-aria](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-aria).
->
-> Looking for the TanStack Start version? Check out [tanstack-shadcn-admin-dashboard](https://github.com/arhamkhnz/tanstack-shadcn-admin-dashboard).
-
-> [!TIP]
-> I’m also working on Nuxt.js and Svelte versions of this dashboard. They’ll be live soon.
-
-## Features
-
-- Built with Next.js 16, TypeScript, Tailwind CSS v4, and Shadcn UI  
-- Responsive and mobile-friendly  
-- Customizable theme presets (light/dark modes with color schemes like Tangerine, Brutalist, and more)  
-- Flexible layouts (collapsible sidebar, variable content widths)  
-- Authentication flows and screens  
-- Prebuilt dashboards (Default, CRM, Finance, Analytics, Productivity) plus legacy variants  
-- Role-Based Access Control (RBAC) with config-driven UI and multi-tenant support *(planned)*  
-
-> [!NOTE]
-> The default dashboard uses the **shadcn neutral** theme.  
-> It also includes additional color presets inspired by [Tweakcn](https://tweakcn.com):  
->
-> - Tangerine  
-> - Neo Brutalism  
-> - Soft Pop  
->
-> You can create more presets by following the same structure as the existing ones.
-
-> Looking for the **Next.js 15** version?  
-> Check out the [`archive/next15`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next15) branch.  
-> This branch contains the setup prior to upgrading to Next 16 and the React Compiler.
-
-> Looking for the **Next.js 14 + Tailwind CSS v3** version?  
-> Check out the [`archive/next14-tailwindv3`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next14-tailwindv3) branch.  
-> It has a different color theme and is not actively maintained, but I try to keep it updated with major changes.  
+> This is a portfolio/demo project. All data (employees, candidates, departments, requests, reviews, etc.) is generated locally with a seeded random dataset — there is no backend, database, authentication, or real persistence. Actions like exporting a file, approving a request, or saving a setting only update local UI state for the duration of the session.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router), TypeScript, Tailwind CSS v4  
-- **UI Components**: Shadcn UI  
-- **Validation**: Zod  
-- **Forms & State Management**: React Hook Form, Zustand  
-- **Tables & Data Handling**: TanStack Table  
-- **Tooling & DX**: Biome, Husky  
+- **Framework**: Next.js 16 (App Router), TypeScript, Tailwind CSS v4
+- **UI Components**: shadcn/ui (Radix primitives)
+- **Charts**: Recharts
+- **Tables**: TanStack Table
+- **Forms & State**: React Hook Form, Zustand
+- **Validation**: Zod
+- **Tooling**: Biome, Husky
 
 ## Screens
 
-### Available
-- Default Dashboard  
-- CRM Dashboard  
-- Finance Dashboard  
-- Analytics Dashboard  
-- Productivity Dashboard  
-- E-commerce Dashboard  
-- Academy Dashboard  
-- Logistics Dashboard  
-- Infrastructure Dashboard  
-- File Manager  
-- Patient Monitoring  
-- Chat Page  
-- Email Page  
-- Profile  
-- Users Management  
-- Roles Management  
-- Kanban Board  
-- Tasks Page  
-- Invoice Page  
-- Calendar Page  
-- Authentication (4 screens)  
-- Legacy: Default v1, CRM v1, Finance v1, Analytics v1
+- **Dashboard** — company-wide KPIs, headcount/hiring/turnover/attendance/performance/training trends, recent activity, upcoming events
+- **Employees** — directory with filters/sorting/column visibility, and an employee 360 profile (personal, employment, attendance, leave, performance, goals, training, documents, compensation, benefits)
+- **Departments** — directory and per-department detail (headcount, budget, performance, activity)
+- **Organization** — visual, scrollable org chart from executive leadership down through department heads
+- **Recruitment** — pipeline KPIs, hiring funnel, sourcing and time-to-hire analytics
+- **Candidates** — pipeline table and kanban board, plus a candidate profile with resume summary and interview timeline
+- **Job Positions** — requisition directory and detail (description, requirements, candidates, funnel)
+- **Onboarding** — new-hire checklists with progress tracking
+- **Attendance** — daily presence/remote/absence KPIs, trends, and a filterable attendance log
+- **Leave Management** — requests, an approval dialog, a team leave calendar, and balances
+- **Performance** — review-cycle completion, ratings distribution, and a review table
+- **Goals** — goal tracking with progress and status by employee/department
+- **Training** — course catalog with enrollment and completion stats
+- **Documents** — a categorized document center (contracts, policies, certificates, IDs, etc.)
+- **Compensation** — salary bands, department spend, and compensation-vs-performance
+- **Benefits** — plan catalog by category with participation and eligibility
+- **Workforce Planning** — headcount and hiring forecasts, department growth, cost projections
+- **Reports** — a report center with previewable, downloadable (demo) reports
+- **Analytics** — cross-functional analytics across workforce, recruitment, attendance, performance, training, and turnover
+- **Settings** — organization profile, appearance, notifications, preferences, and display
 
-### Planned
-I’ve added all the planned screens. Feel free to open an issue for requesting something specific.
+## Co-location File System Architecture
 
-## Colocation File System Architecture
-
-This project follows a **colocation-based architecture** each feature keeps its own pages, components, and logic inside its route folder.  
-Shared UI, hooks, and configuration live at the top level, making the codebase modular, scalable, and easier to maintain as the app grows.
-
-For a full breakdown of the structure with examples, see the [Next Colocation Template](https://github.com/arhamkhnz/next-colocation-template).
+This project follows a co-location-based architecture: each screen keeps its own page, components, and mock-data helpers inside its route folder (`src/app/(main)/dashboard/<screen>/`), while shared UI, hooks, and the mock-data layer (`src/lib/hr/`) live at the top level.
 
 ## Getting Started
 
-You can run this project locally, or deploy it instantly with Vercel.
-
-### Deploy with Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farhamkhnz%2Fnext-shadcn-admin-dashboard)
-
-_Deploy your own copy with one click._
-
-### Run locally
-
-1. **Clone the repository**
+1. **Install dependencies**
    ```bash
-   git clone https://github.com/arhamkhnz/next-shadcn-admin-dashboard.git
-   ```
-   
-2. **Navigate into the project**
-   ```bash
-    cd next-shadcn-admin-dashboard
-   ```
-   
-3. **Install dependencies**
-   ```bash
-    npm install
+   npm install
    ```
 
-4. **Start the development server**
+2. **Start the development server**
    ```bash
    npm run dev
    ```
@@ -127,20 +59,18 @@ Your app will be running at [http://localhost:3000](http://localhost:3000)
 
 ### Formatting and Linting
 
-Format, lint, and organize imports
 ```bash
-npx @biomejs/biome check --write
+npm run check:fix
 ```
-> For more information on available rules, fixes, and CLI options, refer to the [Biome documentation](https://biomejs.dev/).
+> See the [Biome documentation](https://biomejs.dev/) for more on available rules and CLI options.
 
----
+### Production build
 
-> [!IMPORTANT]  
-> This project is updated frequently. If you’re working from a fork or an older clone, pull the latest changes before syncing. Some updates may include breaking changes.
+```bash
+npm run build
+npm run start
+```
 
----
+## Acknowledgements
 
-Contributions are welcome. Feel free to open issues, feature requests, or start a discussion.
-
-
-**Happy Vibe Coding!**
+This project's UI shell, theming system, and component conventions started from [Studio Admin](https://github.com/arhamkhnz/next-shadcn-admin-dashboard), an open-source Next.js admin template by Mohammed Arham Khan (MIT licensed — see `LICENSE`). All HR-specific screens, data, and business logic in this repository were built on top of that foundation.
