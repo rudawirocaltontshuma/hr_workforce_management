@@ -24,7 +24,7 @@ export function AppearanceSettings() {
       <CardHeader>
         <CardTitle className="text-sm">Appearance</CardTitle>
         <CardDescription>
-          Choose how Nexora People looks for you. These preferences are saved to this browser.
+          Choose how Dimension People looks for you. These preferences are saved to this browser.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5 sm:grid-cols-2">

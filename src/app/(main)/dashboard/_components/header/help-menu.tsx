@@ -16,7 +16,7 @@ import {
 import { demoActionToast } from "../hr/demo-toast";
 
 const HELP_ITEMS = [
-  { icon: BookOpen, label: "Getting started guide", description: "Opens the Nexora People onboarding tour." },
+  { icon: BookOpen, label: "Getting started guide", description: "Opens the Dimension People onboarding tour." },
   { icon: Keyboard, label: "Keyboard shortcuts", description: "Shows the shortcut reference sheet." },
   {
     icon: LifeBuoy,

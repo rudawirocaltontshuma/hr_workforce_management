@@ -1,67 +1,65 @@
-# Contributing to Studio Admin
+# Contributing to Dimension People
 
-Thanks for showing interest in improving **Studio Admin** (repo: `next-shadcn-admin-dashboard`).  
-This guide will help you set up your environment and understand how to contribute.
+Thanks for your interest in improving **Dimension People**, a front-end demo of an enterprise HR & workforce management platform. This guide covers how to set up your environment and where things live.
 
 ---
 
 ## Overview
 
-This project is built with **Next.js 16**, **TypeScript**, **Tailwind CSS v4**, and **Shadcn UI**.  
-The goal is to keep the codebase modular, scalable, and easy to extend.
+This project is built with **Next.js 16**, **TypeScript**, **Tailwind CSS v4**, and **shadcn/ui**. It is a front-end-only demonstration: all data is generated locally in `src/lib/hr/` with a seeded random dataset, and there is no backend, database, or authentication. Keep changes consistent with that constraint — new features should extend the local mock-data layer, not call out to a real API.
 
 ---
 
 ## Project Layout
 
-We use a **colocation-based file system**. Each feature keeps its own pages, components, and logic.
+This project uses a **co-location-based file system**. Each screen keeps its own page, components, and mock-data helpers inside its route folder.
 
 ```
 src
-├── app               # Next.js routes (App Router)
-│   ├── (auth)        # Auth layouts & screens
-│   ├── (main)        # Main dashboard routes
-│   │   └── (dashboard)
-│   │       ├── crm
-│   │       ├── finance
-│   │       ├── default
-│   │       └── ...
-│   └── layout.tsx
-├── components        # Shared UI components
-├── hooks             # Reusable hooks
-├── lib               # Config & utilities
-├── styles            # Tailwind / theme setup
-└── types             # TypeScript definitions
+├── app
+│   ├── (external)          # Public/landing routes
+│   └── (main)
+│       └── dashboard
+│           ├── employees          # + [id] profile
+│           ├── departments        # + [id] detail
+│           ├── organization
+│           ├── recruitment
+│           ├── candidates         # + [id] profile
+│           ├── positions          # + [id] detail
+│           ├── onboarding
+│           ├── attendance
+│           ├── leave
+│           ├── performance
+│           ├── goals
+│           ├── training
+│           ├── documents
+│           ├── compensation
+│           ├── benefits
+│           ├── workforce-planning
+│           ├── reports
+│           ├── analytics
+│           ├── settings
+│           ├── _components        # Shared shell: header, sidebar, HR widgets
+│           └── page.tsx           # Executive dashboard
+├── components/ui            # shadcn/ui components (do not modify directly)
+├── components/calendar       # Shared calendar primitive (do not modify directly)
+├── hooks                    # Reusable hooks
+├── lib/hr                   # Mock data generators, types, and aggregates
+├── lib                      # Other shared utilities/config
+├── navigation/sidebar        # Sidebar nav config
+└── styles                   # Tailwind / theme presets
 ```
-
-If you’d like a more detailed example of this setup, check out the [Next Colocation Template](https://github.com/arhamkhnz/next-colocation-template), where the full structure is explained with examples.
 
 ---
 
 ## Getting Started
 
-### Fork and Clone the Repository
-
-1. Fork the Repository
-   
-   Click [here](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/fork) to fork the repository.
-
-2. Clone the Repository  
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/next-shadcn-admin-dashboard.git
-   ```
-   
-3. Navigate into the Project  
-   ```bash
-   cd next-shadcn-admin-dashboard
-   ```
-
-4. **Install dependencies**
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-5. **Run the dev server**
+2. **Run the dev server**
    ```bash
    npm run dev
    ```
@@ -76,52 +74,44 @@ If you’d like a more detailed example of this setup, check out the [Next Coloc
   git checkout -b feature/my-update
   ```
 
-- Use clear commit messages:
+- Use clear, conventional commit messages:
   ```bash
-  git commit -m "feat: add finance dashboard screen"
+  git commit -m "feat: add compensation band comparison chart"
   ```
 
 - Open a Pull Request once ready.
-- If your change adds a new UI screen or component, include a screenshot in your PR description.
+- If your change adds a new screen or component, include a screenshot in your PR description (light and dark mode, plus mobile if the layout changed).
 
 ---
 
 ## Where to Contribute
 
-- **External Pages**: Landing pages or other non-dashboard routes → `src/app/(external)/`  
-- **Auth Screens**: Login, register, and authentication layouts → `src/app/(main)/auth/`  
-- **Dashboard Screens**: Feature dashboards like CRM, Finance, Analytics → `src/app/(main)/dashboard/`
-- **Components**: Reusable UI goes in `src/components/`  
-- **Hooks**: Custom logic goes in `src/hooks/`  
-- **Themes**: New presets under `src/styles/presets/`  
+- **HR Screens**: `src/app/(main)/dashboard/<screen>/` — one folder per nav item (employees, departments, recruitment, etc.)
+- **Shared Dashboard Shell**: header, sidebar, and cross-screen HR widgets (KPI cards, status badges, data table shell) → `src/app/(main)/dashboard/_components/`
+- **Mock Data**: generators, types, and derived aggregates → `src/lib/hr/`
+- **Reusable shadcn Components**: `src/components/ui/` (do not modify directly — style/customize where they're used instead)
+- **Hooks**: `src/hooks/`
+- **Themes**: new presets under `src/styles/presets/`
 
 ---
 
 ## Guidelines
 
-- Prefer **TypeScript types** over `any`
-- Husky pre-commit hooks are enabled - linting and formatting run automatically when you commit, and if there are errors the commit will be blocked until they are fixed. 
-- Follow **Shadcn UI** style & Tailwind v4 conventions
-- Keep accessibility in mind (ARIA, keyboard nav)
-- Use clear commit messages with conventional prefixes (`feat:`, `fix:`, `chore:`, etc.)
-- Avoid unnecessary dependencies — prefer existing utilities where possible
+- Prefer **TypeScript types** over `any`.
+- Husky pre-commit hooks are enabled — linting and formatting run automatically when you commit, and if there are errors the commit will be blocked until they are fixed.
+- Follow **shadcn/ui** and Tailwind v4 conventions; use semantic theme tokens, not raw hex/oklch values.
+- Keep accessibility in mind (ARIA, keyboard navigation, focus states).
+- Any interactive action (approve, export, save, upload) is a demo action — surface it with a toast rather than pretending it persisted.
+- Avoid unnecessary dependencies — prefer existing utilities where possible.
 
 ---
 
 ## Submitting PRs
 
-- Open a Pull Request once your changes are ready.  
-- Ensure your branch is up to date with `main` before submitting.  
+- Ensure your branch is up to date with `main` before submitting.
+- Run `npm run check`, `npx tsc --noEmit`, and `npm run build` locally before opening the PR.
 - Reference any related issue in your PR for context.
 
 ---
 
-## Questions & Support
-
-- Report bugs, suggestions, or issues via [GitHub Issues](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/issues)
-
----
-
 Your contributions keep this project growing. 🚀
-
-**Happy Vibe Coding!**
