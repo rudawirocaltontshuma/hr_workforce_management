@@ -4,7 +4,6 @@ import { Briefcase, DollarSign, TrendingUp, Users } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   departmentAveragePerformance,
@@ -17,13 +16,13 @@ import {
 import { formatCurrency } from "@/lib/utils";
 
 import { getAvatarTone } from "../../_components/hr/avatar-tone";
-import { demoActionToast } from "../../_components/hr/demo-toast";
 import { timeAgo } from "../../_components/hr/format";
 import { KpiCard } from "../../_components/hr/kpi-card";
 import { PageHeader } from "../../_components/hr/page-header";
 import { StatusBadge } from "../../_components/hr/status-badge";
 import { EmployeesDirectory } from "../../employees/_components/employees-directory";
 import { DepartmentCharts } from "./_components/department-charts";
+import { EditDepartmentButton } from "./_components/edit-department-button";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -73,12 +72,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </div>
           ) : null}
         </div>
-        <Button
-          variant="outline"
-          onClick={() => demoActionToast("Editing department", `Changes to ${department.name} are not persisted.`)}
-        >
-          Edit department
-        </Button>
+        <EditDepartmentButton departmentName={department.name} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">

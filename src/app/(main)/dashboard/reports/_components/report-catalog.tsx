@@ -1,16 +1,4 @@
 import {
-  Banknote,
-  Briefcase,
-  CalendarClock,
-  Clock,
-  type LucideIcon,
-  TrendingDown,
-  TrendingUp,
-  UserSearch,
-  Users,
-} from "lucide-react";
-
-import {
   activeEmployees,
   attendanceKpis,
   benefitPlans,
@@ -23,11 +11,21 @@ import {
 } from "@/lib/hr";
 import { formatCurrency } from "@/lib/utils";
 
+export type ReportId =
+  | "headcount"
+  | "recruitment"
+  | "attendance"
+  | "leave"
+  | "performance"
+  | "training"
+  | "compensation"
+  | "turnover"
+  | "benefits";
+
 export interface ReportDefinition {
-  id: string;
+  id: ReportId;
   title: string;
   description: string;
-  icon: LucideIcon;
   category: string;
   lastGenerated: string;
   stats: { label: string; value: string }[];
@@ -46,7 +44,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "headcount",
       title: "Headcount Report",
       description: "Active headcount, new hires and terminations across every department.",
-      icon: Users,
       category: "Workforce",
       lastGenerated: "2026-08-24",
       stats: [
@@ -58,7 +55,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "recruitment",
       title: "Recruitment Report",
       description: "Pipeline volume, hiring funnel conversion and time-to-hire by department.",
-      icon: UserSearch,
       category: "Talent Acquisition",
       lastGenerated: "2026-08-22",
       stats: [
@@ -70,7 +66,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "attendance",
       title: "Attendance Report",
       description: "Presence, remote work and absence patterns across the organization.",
-      icon: Clock,
       category: "Time & Attendance",
       lastGenerated: "2026-08-29",
       stats: [
@@ -82,7 +77,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "leave",
       title: "Leave Report",
       description: "Leave requests, balances and approvals by type and department.",
-      icon: CalendarClock,
       category: "Time & Attendance",
       lastGenerated: "2026-08-27",
       stats: [
@@ -94,7 +88,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "performance",
       title: "Performance Report",
       description: "Review cycle completion, ratings distribution and goal attainment.",
-      icon: TrendingUp,
       category: "Performance & Growth",
       lastGenerated: "2026-08-20",
       stats: [
@@ -106,7 +99,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "training",
       title: "Training Report",
       description: "Course enrollment, completion rates and certificates issued.",
-      icon: Briefcase,
       category: "Performance & Growth",
       lastGenerated: "2026-08-18",
       stats: [
@@ -118,7 +110,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "compensation",
       title: "Compensation Report",
       description: "Payroll totals, salary bands and department compensation spend.",
-      icon: Banknote,
       category: "Compensation & Benefits",
       lastGenerated: "2026-08-15",
       stats: [
@@ -130,7 +121,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "turnover",
       title: "Turnover Report",
       description: "Voluntary and involuntary departures, retention by department.",
-      icon: TrendingDown,
       category: "Workforce",
       lastGenerated: "2026-08-12",
       stats: [
@@ -142,7 +132,6 @@ export function buildReportCatalog(): ReportDefinition[] {
       id: "benefits",
       title: "Benefits Report",
       description: "Enrollment and participation across every benefit plan.",
-      icon: Users,
       category: "Compensation & Benefits",
       lastGenerated: "2026-08-10",
       stats: [

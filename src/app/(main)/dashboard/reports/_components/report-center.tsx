@@ -2,7 +2,18 @@
 
 import * as React from "react";
 
-import { Download, FileText } from "lucide-react";
+import {
+  Banknote,
+  Briefcase,
+  CalendarClock,
+  Clock,
+  Download,
+  type LucideIcon,
+  TrendingDown,
+  TrendingUp,
+  UserSearch,
+  Users,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +29,21 @@ import {
 
 import { demoActionToast } from "../../_components/hr/demo-toast";
 import { formatDate } from "../../_components/hr/format";
-import type { ReportDefinition } from "./report-catalog";
+import type { ReportDefinition, ReportId } from "./report-catalog";
+
+// Icons live here (client-only) rather than on the report data itself: component references
+// can't be sent from a Server Component to a Client Component as plain props.
+const REPORT_ICONS: Record<ReportId, LucideIcon> = {
+  headcount: Users,
+  recruitment: UserSearch,
+  attendance: Clock,
+  leave: CalendarClock,
+  performance: TrendingUp,
+  training: Briefcase,
+  compensation: Banknote,
+  turnover: TrendingDown,
+  benefits: Users,
+};
 
 export function ReportCenter({ reports }: { reports: ReportDefinition[] }) {
   const [selected, setSelected] = React.useState<ReportDefinition | null>(null);
@@ -26,38 +51,41 @@ export function ReportCenter({ reports }: { reports: ReportDefinition[] }) {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {reports.map((report) => (
-          <Card key={report.id}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <span className="flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                  <report.icon className="size-4" />
-                </span>
-                <Badge variant="outline" className="rounded-sm">
-                  {report.category}
-                </Badge>
-              </div>
-              <CardTitle className="text-base">{report.title}</CardTitle>
-              <CardDescription>{report.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-xs">
-              Last generated {formatDate(report.lastGenerated)}
-            </CardContent>
-            <CardFooter className="justify-between">
-              <Button size="sm" variant="outline" onClick={() => setSelected(report)}>
-                Preview
-              </Button>
-              <Button
-                size="sm"
-                onClick={() =>
-                  demoActionToast(`Downloading ${report.title}`, "This demo does not generate a real file.")
-                }
-              >
-                <Download /> Download
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {reports.map((report) => {
+          const Icon = REPORT_ICONS[report.id];
+          return (
+            <Card key={report.id}>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <span className="flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                    <Icon className="size-4" />
+                  </span>
+                  <Badge variant="outline" className="rounded-sm">
+                    {report.category}
+                  </Badge>
+                </div>
+                <CardTitle className="text-base">{report.title}</CardTitle>
+                <CardDescription>{report.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="text-muted-foreground text-xs">
+                Last generated {formatDate(report.lastGenerated)}
+              </CardContent>
+              <CardFooter className="justify-between">
+                <Button size="sm" variant="outline" onClick={() => setSelected(report)}>
+                  Preview
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    demoActionToast(`Downloading ${report.title}`, "This demo does not generate a real file.")
+                  }
+                >
+                  <Download /> Download
+                </Button>
+              </CardFooter>
+            </Card>
+          );
+        })}
       </div>
 
       <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
@@ -66,7 +94,10 @@ export function ReportCenter({ reports }: { reports: ReportDefinition[] }) {
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <FileText className="size-4" /> {selected.title}
+                  {(() => {
+                    const Icon = REPORT_ICONS[selected.id];
+                    return <Icon className="size-4" />;
+                  })()} {selected.title}
                 </DialogTitle>
                 <DialogDescription>{selected.description}</DialogDescription>
               </DialogHeader>
