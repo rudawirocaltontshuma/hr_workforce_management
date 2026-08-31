@@ -10,8 +10,9 @@ import { cn } from "@/lib/utils";
 import { getPreference } from "@/server/server-actions";
 
 import { AccountSwitcher } from "./_components/header/account-switcher";
-import { GitHubRepositoriesMenu } from "./_components/header/github-repositories-menu";
+import { HelpMenu } from "./_components/header/help-menu";
 import { LayoutControls } from "./_components/header/layout-controls";
+import { NotificationsMenu } from "./_components/header/notifications-menu";
 import { SearchDialog } from "./_components/header/search-dialog";
 import { ThemeSwitcher } from "./_components/header/theme-switcher";
 
@@ -62,7 +63,8 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
             <div className="flex items-center gap-2">
               <LayoutControls />
               <ThemeSwitcher />
-              <GitHubRepositoriesMenu />
+              <HelpMenu />
+              <NotificationsMenu />
               <AccountSwitcher users={users} />
             </div>
           </div>

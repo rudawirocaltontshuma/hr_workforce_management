@@ -1,82 +1,130 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  absenceDistribution,
+  applicationsTrend,
+  attendanceTrend,
+  averageTenureYears,
+  candidateSources,
+  courseCompletionRates,
+  dashboardKpis,
+  departmentAttendanceRates,
+  departmentDistribution,
+  departmentPerformanceScores,
+  headcountTrend,
+  hiringFunnel,
+  lateArrivalsTrend,
+  performanceDistribution,
+  recruiterPerformance,
+  reviewCompletionTrend,
+  timeToHireByDepartment,
+  trainingCompletionTrend,
+  turnoverByDepartment,
+  turnoverTrend,
+} from "@/lib/hr";
 
-import { AnalyticsKpiStrip } from "./_components/analytics-kpi-strip";
-import { AnalyticsToolbar } from "./_components/analytics-toolbar";
-import { RealtimeVisitors } from "./_components/realtime-visitors";
-import { TopPages } from "./_components/top-pages";
-import { TopTrafficSources } from "./_components/top-traffic-sources";
-import { TrafficQuality } from "./_components/traffic-quality";
-
-// Import this stylesheet in any page or component that renders country flag classes.
-import "@/styles/flag-icons/flags.css";
+import { KpiCard } from "../_components/hr/kpi-card";
+import { PageHeader } from "../_components/hr/page-header";
+import {
+  DepartmentDistributionChart,
+  HeadcountChart,
+  TrainingCompletionChart,
+  TurnoverChart,
+  AttendanceTrendChart as WorkforceAttendanceChart,
+  PerformanceDistributionChart as WorkforcePerformanceChart,
+} from "../_components/overview/trend-charts";
+import {
+  AbsenceDistributionChart,
+  DepartmentAttendanceChart,
+  LateArrivalsChart,
+} from "../attendance/_components/attendance-charts";
+import { DepartmentPerformanceChart, ReviewCompletionChart } from "../performance/_components/performance-charts";
+import {
+  ApplicationsTrendChart,
+  CandidateSourcesChart,
+  HiringFunnelChart,
+  RecruitmentPerformanceChart,
+  TimeToHireChart,
+} from "../recruitment/_components/recruitment-charts";
+import { CourseCompletionChart, TurnoverByDepartmentChart } from "./_components/analytics-extra-charts";
 
 export default function Page() {
+  const kpis = dashboardKpis();
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="space-y-1">
-        <h1 className="text-3xl tracking-tight">Hello, Aiy</h1>
-        <p className="text-muted-foreground text-sm">
-          Monitor traffic, engagement, and conversion performance in one view.
-        </p>
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        title="Analytics"
+        description="Deep-dive analytics across workforce, recruitment, attendance, performance, training and turnover."
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Analytics" }]}
+      />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <KpiCard
+          label="Active Employees"
+          value={kpis.totalEmployees.toLocaleString()}
+          delta={{ value: "3.2%", direction: "up" }}
+          hint="vs. 12 months ago"
+        />
+        <KpiCard
+          label="Turnover Rate"
+          value={`${kpis.turnoverRate}%`}
+          delta={{ value: "0.4%", direction: "down", tone: "positive" }}
+          hint="Trailing 12 months"
+        />
+        <KpiCard label="Average Tenure" value={`${averageTenureYears()} yrs`} />
+        <KpiCard label="Attendance Rate" value={`${kpis.attendanceRate}%`} delta={{ value: "0.6%", direction: "up" }} />
       </div>
 
-      <Tabs defaultValue="overview" className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <TabsList className="gap-1">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="audience">Audience</TabsTrigger>
-            <TabsTrigger value="acquisition">Acquisition</TabsTrigger>
-            <TabsTrigger value="engagement">Engagement</TabsTrigger>
-            <TabsTrigger value="conversions">Conversions</TabsTrigger>
+      <Tabs defaultValue="workforce" className="gap-4">
+        <div className="scrollbar-none touch-pan-x overflow-x-auto">
+          <TabsList className="w-max min-w-full justify-start">
+            <TabsTrigger value="workforce">Workforce</TabsTrigger>
+            <TabsTrigger value="recruitment">Recruitment</TabsTrigger>
+            <TabsTrigger value="attendance">Attendance</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
+            <TabsTrigger value="training">Training</TabsTrigger>
+            <TabsTrigger value="turnover">Turnover</TabsTrigger>
           </TabsList>
-
-          <AnalyticsToolbar />
         </div>
 
-        <TabsContent value="overview" className="flex flex-col gap-4">
-          <AnalyticsKpiStrip />
+        <TabsContent value="workforce" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <HeadcountChart data={headcountTrend()} />
+          <DepartmentDistributionChart data={departmentDistribution()} />
+        </TabsContent>
 
-          <div className="grid grid-cols-1 items-stretch gap-4 xl:grid-cols-12">
-            <div className="xl:col-span-7">
-              <TrafficQuality />
-            </div>
-            <div className="xl:col-span-5">
-              <RealtimeVisitors />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 items-stretch gap-4 xl:grid-cols-12">
-            <div className="xl:col-span-7">
-              <TopPages />
-            </div>
-            <div className="xl:col-span-5 xl:col-start-8">
-              <TopTrafficSources />
-            </div>
+        <TabsContent value="recruitment" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <HiringFunnelChart data={hiringFunnel()} />
+          <ApplicationsTrendChart data={applicationsTrend()} />
+          <TimeToHireChart data={timeToHireByDepartment()} />
+          <CandidateSourcesChart data={candidateSources()} />
+          <div className="xl:col-span-2">
+            <RecruitmentPerformanceChart data={recruiterPerformance()} />
           </div>
         </TabsContent>
 
-        <TabsContent value="audience">
-          <div className="flex h-64 items-center justify-center rounded-xl border border-border border-dashed text-muted-foreground">
-            Audience view coming soon.
+        <TabsContent value="attendance" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <WorkforceAttendanceChart data={attendanceTrend()} />
+          <DepartmentAttendanceChart data={departmentAttendanceRates()} />
+          <LateArrivalsChart data={lateArrivalsTrend()} />
+          <AbsenceDistributionChart data={absenceDistribution()} />
+        </TabsContent>
+
+        <TabsContent value="performance" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <WorkforcePerformanceChart data={performanceDistribution()} />
+          <ReviewCompletionChart data={reviewCompletionTrend()} />
+          <div className="xl:col-span-2">
+            <DepartmentPerformanceChart data={departmentPerformanceScores()} />
           </div>
         </TabsContent>
 
-        <TabsContent value="acquisition">
-          <div className="flex h-64 items-center justify-center rounded-xl border border-border border-dashed text-muted-foreground">
-            Acquisition view coming soon.
-          </div>
+        <TabsContent value="training" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <TrainingCompletionChart data={trainingCompletionTrend()} />
+          <CourseCompletionChart data={courseCompletionRates()} />
         </TabsContent>
 
-        <TabsContent value="engagement">
-          <div className="flex h-64 items-center justify-center rounded-xl border border-border border-dashed text-muted-foreground">
-            Engagement view coming soon.
-          </div>
-        </TabsContent>
-
-        <TabsContent value="conversions">
-          <div className="flex h-64 items-center justify-center rounded-xl border border-border border-dashed text-muted-foreground">
-            Conversions view coming soon.
-          </div>
+        <TabsContent value="turnover" className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <TurnoverChart data={turnoverTrend()} />
+          <TurnoverByDepartmentChart data={turnoverByDepartment()} />
         </TabsContent>
       </Tabs>
     </div>

@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Search } from "lucide-react";
+import { Building2, ClipboardList, Search, User, UserSearch } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { candidates, departments, employees, positions } from "@/lib/hr";
 import type { NavMainItem } from "@/navigation/sidebar/sidebar-items";
 import { sidebarItems } from "@/navigation/sidebar/sidebar-items";
 
@@ -68,6 +69,41 @@ function getAvailableItems(items: SearchItem[]) {
 }
 
 const recommendations = getAvailableItems(searchItems);
+
+const entityItems: SearchItem[] = [
+  ...employees
+    .filter((employee) => employee.status !== "Terminated")
+    .map((employee) => ({
+      id: employee.id,
+      group: "Employees",
+      label: `${employee.name} · ${employee.jobTitle}`,
+      url: `/dashboard/employees/${employee.id}`,
+      icon: User,
+    })),
+  ...departments.map((department) => ({
+    id: department.id,
+    group: "Departments",
+    label: department.name,
+    url: `/dashboard/departments/${department.id}`,
+    icon: Building2,
+  })),
+  ...candidates.map((candidate) => ({
+    id: candidate.id,
+    group: "Candidates",
+    label: `${candidate.name} · ${candidate.stage}`,
+    url: `/dashboard/candidates/${candidate.id}`,
+    icon: UserSearch,
+  })),
+  ...positions.map((position) => ({
+    id: position.id,
+    group: "Job Positions",
+    label: position.title,
+    url: `/dashboard/positions/${position.id}`,
+    icon: ClipboardList,
+  })),
+];
+
+const allSearchItems = [...searchItems, ...entityItems];
 
 function groupBy(items: SearchItem[]) {
   const groups = [...new Set(items.map((item) => item.group))];
@@ -145,10 +181,14 @@ export function SearchDialog() {
       </Button>
       <CommandDialog open={open} onOpenChange={handleOpenChange}>
         <Command>
-          <CommandInput placeholder="Search dashboards, users, and more…" value={query} onValueChange={setQuery} />
+          <CommandInput
+            placeholder="Search employees, departments, candidates, positions…"
+            value={query}
+            onValueChange={setQuery}
+          />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            {query ? renderGroups(searchItems) : renderGroups(recommendations)}
+            {query ? renderGroups(allSearchItems) : renderGroups(recommendations)}
           </CommandList>
         </Command>
       </CommandDialog>

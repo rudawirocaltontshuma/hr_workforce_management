@@ -3,12 +3,14 @@ import packageJson from "../../package.json";
 const currentYear = new Date().getFullYear();
 
 export const APP_CONFIG = {
-  name: "Studio Admin",
+  name: "Nexora People",
   version: packageJson.version,
-  copyright: `© ${currentYear}, Studio Admin.`,
+  copyright: `© ${currentYear}, Nexora People.`,
   meta: {
-    title: "Studio Admin - Modern Next.js Dashboard Starter Template",
+    title: "Nexora People - Enterprise HR & Workforce Management Platform",
     description:
-      "Studio Admin is a modern, open-source dashboard starter template built with Next.js 16, Tailwind CSS v4, and shadcn/ui. Perfect for SaaS apps, admin panels, and internal tools—fully customizable and production-ready.",
+      "Nexora People is an enterprise HR and workforce management platform demo covering employees, recruitment, attendance, leave, performance, compensation and workforce analytics. Built with Next.js, Tailwind CSS and shadcn/ui.",
   },
 };
+
+export const COMPANY_NAME = "Solstice Technologies, Inc.";
